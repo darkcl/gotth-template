@@ -1,0 +1,19 @@
+package navbar
+
+import (
+	"gotth/modules/components/themes"
+)
+
+type NavbarProps struct {
+	LeftNavItems templ.Component
+}
+
+templ Navbar(props NavbarProps) {
+	<nav class="border-b py-3">
+		<div class="container mx-auto px-4 flex justify-end">
+			@props.LeftNavItems
+
+			@themes.ThemeSwitcher()
+		</div>
+	</nav>
+}

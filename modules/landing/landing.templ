@@ -1,0 +1,23 @@
+package landing
+
+import (
+	"gotth/modules/layouts"
+	"gotth/modules/components/button"
+)
+
+templ LandingPage() {
+	@layouts.BaseLayout(layouts.BaseLayoutProps{
+		LeftNavItems: NavItems(),
+	}) {
+		<p>Hello, world!</p>
+	}
+}
+
+templ NavItems() {
+	@button.Button(button.Props{
+		Variant: button.VariantDefault,
+		Class:   "mr-2",
+	}) {
+		Login
+	}
+}
