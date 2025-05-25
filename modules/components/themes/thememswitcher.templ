@@ -1,10 +1,5 @@
 package themes
 
-import (
-	"gotth/modules/components/button"
-	"gotth/modules/components/icon"
-)
-
 templ themeSwitcherHandler() {
 	{{ handle := templ.NewOnceHandle() }}
 	@handle.Once() {
@@ -28,38 +23,23 @@ type ThemeSwitcherProps struct {
 }
 
 templ ThemeSwitcher(props ...ThemeSwitcherProps) {
-	{{ var p ThemeSwitcherProps }}
-	if len(props) > 0 {
-		{{ p = props[0] }}
-	}
 	@themeSwitcherHandler()
-	@button.Button(button.Props{
-		Size:    button.SizeIcon,
-		Variant: button.VariantGhost,
-		Class:   p.Class,
-		Attributes: templ.Attributes{
-			"@click": "toggleTheme",
-		},
-	}) {
+
+	<button
+		@click="toggleTheme"
+		class="bg-gray-300 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-600"
+  >
 		@DynamicThemeIcon()
-	}
+	</button>
 }
 
 templ DynamicThemeIcon() {
 	<div x-data="themeSwitcherHandler">
 		<span x-show="isDarkMode" class="block">
-			@LightIcon()
+			Light Mode
 		</span>
 		<span x-show="isLightMode" class="block">
-			@DarkIcon()
+			Dark Mode
 		</span>
 	</div>
-}
-
-templ DarkIcon() {
-	@icon.Moon()
-}
-
-templ LightIcon() {
-	@icon.SunMedium()
 }

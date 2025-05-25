@@ -1,9 +1,5 @@
 package layouts
 
-import (
-	"gotth/modules/components/navbar"
-)
-
 templ ThemeSwitcherScript() {
 	{{ handle := templ.NewOnceHandle() }}
 	@handle.Once() {
@@ -28,11 +24,9 @@ templ ThemeSwitcherScript() {
 	}
 }
 
-type BaseLayoutProps struct {
-	LeftNavItems templ.Component
-}
 
-templ BaseLayout(props BaseLayoutProps) {
+
+templ BaseLayout() {
 	<!DOCTYPE html>
 	<html lang="en" class="h-full dark">
 		<head>
@@ -51,9 +45,6 @@ templ BaseLayout(props BaseLayoutProps) {
 			x-data="themeHandler"
 			x-bind:class="themeClasses"
 		>
-			@navbar.Navbar(navbar.NavbarProps{
-				LeftNavItems: props.LeftNavItems,
-			})
 			{ children... }
 		</body>
 	</html>

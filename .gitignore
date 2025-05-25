@@ -29,3 +29,5 @@ go.work
 build/
 tmp/
 *.db
+
+*_templ.go

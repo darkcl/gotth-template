@@ -2,22 +2,37 @@ package landing
 
 import (
 	"gotth/modules/layouts"
-	"gotth/modules/components/button"
+	"gotth/modules/components/themes"
 )
 
 templ LandingPage() {
-	@layouts.BaseLayout(layouts.BaseLayoutProps{
-		LeftNavItems: NavItems(),
-	}) {
-		<p>Hello, world!</p>
-	}
-}
-
-templ NavItems() {
-	@button.Button(button.Props{
-		Variant: button.VariantDefault,
-		Class:   "mr-2",
-	}) {
-		Login
+	@layouts.BaseLayout() {
+		<div class="bg-gray-100 dark:bg-gray-900 flex items-center justify-center min-h-screen">
+			<div class="bg-white dark:bg-gray-800 dark:bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md">
+	        <div class="flex justify-between items-center mb-4">
+	            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200">Todo List</h1>
+							@themes.ThemeSwitcher()
+	        </div>
+	        <div class="flex mb-4">
+	            <input
+	                type="text"
+	                id="todoInput"
+	                placeholder="Add a new task"
+	                class="flex-1 p-2 border border-gray-300 dark:border-gray-600 rounded-l-lg bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+	            >
+	            <button
+	                class="bg-blue-500 dark:bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600 dark:hover:bg-blue-700"
+	            >
+	                Add
+	            </button>
+	        </div>
+	        <ul id="todoList" class="space-y-2">
+	            <li class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
+	                <span class="text-gray-700 dark:text-gray-300">Sample Task</span>
+	                <button class="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">Delete</button>
+	            </li>
+	        </ul>
+	    </div>
+		</div>
 	}
 }
