@@ -4,7 +4,9 @@ import (
 	"context"
 	"fmt"
 	"gotth/assets"
+	"gotth/common"
 	"gotth/modules/landing"
+	"gotth/modules/todo"
 	"gotth/store"
 	"log"
 	"net/http"
@@ -14,10 +16,10 @@ import (
 )
 
 type Server struct {
-	logger *log.Logger
-	port int
+	logger     *log.Logger
+	port       int
 	httpServer *http.Server
-	store *store.BBoltDatabase
+	store      *store.BBoltDatabase
 
 	useEmbedded bool
 }
@@ -29,9 +31,9 @@ func MustNewServer(
 	useEmbedded bool,
 ) *Server {
 	return &Server{
-		logger: logger,
-		port: port,
-		store: db,
+		logger:      logger,
+		port:        port,
+		store:       db,
 		useEmbedded: useEmbedded,
 	}
 }
@@ -50,7 +52,13 @@ func (s *Server) Start() error {
 		router.Handle("GET /assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("./assets"))))
 	}
 
-	landing.NewLandingController(router)
+	controller := make([]common.Controller, 0)
+	controller = append(controller, landing.NewLandingController())
+	controller = append(controller, todo.NewTodoController())
+
+	for _, controller := range controller {
+		controller.SetupRoute(router)
+	}
 
 	s.httpServer = &http.Server{
 		Addr:    fmt.Sprintf(":%d", s.port),
@@ -60,14 +68,13 @@ func (s *Server) Start() error {
 	stopChan := make(chan os.Signal, 1)
 	signal.Notify(stopChan, os.Interrupt, syscall.SIGTERM)
 
-	go func () {
-		if err := s.httpServer.ListenAndServe()
-		err != http.ErrServerClosed {
+	go func() {
+		if err := s.httpServer.ListenAndServe(); err != http.ErrServerClosed {
 			log.Fatalf("Error running server: %v", err)
 		}
 	}()
 
-	<- stopChan
+	<-stopChan
 
 	if err := s.httpServer.Shutdown(context.Background()); err != nil {
 		s.logger.Fatalf("Error shutting down server: %v", err)

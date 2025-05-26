@@ -1,16 +1,20 @@
 package landing
 
 import (
+	"gotth/common"
 	"net/http"
 )
 
 type LandingController struct {
+	common.Controller
 }
 
-func NewLandingController(router *http.ServeMux) *LandingController {
-	controller := &LandingController{}
-	router.HandleFunc("GET /", controller.LandingPage)
-	return controller
+func NewLandingController() *LandingController {
+	return &LandingController{}
+}
+
+func (l *LandingController) SetupRoute(router *http.ServeMux) {
+	router.HandleFunc("GET /", l.LandingPage)
 }
 
 func (l *LandingController) LandingPage(w http.ResponseWriter, r *http.Request) {
